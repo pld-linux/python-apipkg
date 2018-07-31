@@ -7,27 +7,29 @@
 Summary:	Namespace control and lazy-import mechanism
 Summary(pl.UTF-8):	Kontrola przestrzeni nazw i mechanizm leniwego importu
 Name:		python-apipkg
-Version:	1.4
-Release:	2
+Version:	1.5
+Release:	1
 License:	MIT
 Group:		Libraries/Python
-#Source0Download: https://pypi.python.org/simple/apipkg
-Source0:	https://pypi.python.org/packages/source/a/apipkg/apipkg-%{version}.tar.gz
-# Source0-md5:	17e5668601a2322aff41548cb957e7c8
+#Source0Download: https://pypi.org/simple/apipkg/
+Source0:	https://files.pythonhosted.org/packages/source/a/apipkg/apipkg-%{version}.tar.gz
+# Source0-md5:	6d2bc4d9358e046cc56efc677c976a5c
 URL:		http://bitbucket.org/hpk42/apipkg
 %if %{with python2}
-BuildRequires:	python-modules >= 2.3
+BuildRequires:	python-modules >= 1:2.7
 %{?with_tests:BuildRequires:	python-pytest}
-BuildRequires:	python-setuptools
+BuildRequires:	python-setuptools >= 30.3.0
+BuildRequires:	python-setuptools_scm
 %endif
 %if %{with python3}
-BuildRequires:	python3-modules >= 1:3.2
+BuildRequires:	python3-modules >= 1:3.4
 %{?with_tests:BuildRequires:	python3-pytest}
-BuildRequires:	python3-setuptools
+BuildRequires:	python3-setuptools >= 30.3.0
+BuildRequires:	python3-setuptools_scm
 %endif
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.714
-Requires:	python-modules >= 2.3
+Requires:	python-modules >= 1:2.7
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -44,7 +46,7 @@ przez użytkowników.
 Summary:	Namespace control and lazy-import mechanism
 Summary(pl.UTF-8):	Kontrola przestrzeni nazw i mechanizm leniwego importu
 Group:		Libraries/Python
-Requires:	python3-modules >= 1:3.2
+Requires:	python3-modules >= 1:3.4
 
 %description -n python3-apipkg
 With apipkg you can control the exported namespace of a Python package
@@ -62,13 +64,19 @@ przez użytkowników.
 %if %{with python2}
 %py_build
 
-%{?with_tests:%{__python} -mpytest}
+%if %{with tests}
+PYTHONPATH=$(pwd)/src \
+%{__python} -m pytest
+%endif
 %endif
 
 %if %{with python3}
 %py3_build
 
-%{?with_tests:%{__python3} -mpytest}
+%if %{with tests}
+PYTHONPATH=$(pwd)/src \
+%{__python3} -m pytest
+%endif
 %endif
 
 %install
@@ -90,18 +98,15 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with python2}
 %files
 %defattr(644,root,root,755)
-%doc CHANGELOG LICENSE README.txt
-%{py_sitescriptdir}/apipkg.py[co]
-%if "%{py_ver}" > "2.4"
+%doc CHANGELOG LICENSE README.rst
+%{py_sitescriptdir}/apipkg
 %{py_sitescriptdir}/apipkg-%{version}-py*.egg-info
-%endif
 %endif
 
 %if %{with python3}
 %files -n python3-apipkg
 %defattr(644,root,root,755)
-%doc CHANGELOG LICENSE README.txt
-%{py3_sitescriptdir}/apipkg.py
-%{py3_sitescriptdir}/__pycache__/apipkg.cpython-*.py[co]
+%doc CHANGELOG LICENSE README.rst
+%{py3_sitescriptdir}/apipkg
 %{py3_sitescriptdir}/apipkg-%{version}-py*.egg-info
 %endif
