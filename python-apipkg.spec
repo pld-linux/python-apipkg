@@ -8,7 +8,7 @@ Summary:	Namespace control and lazy-import mechanism
 Summary(pl.UTF-8):	Kontrola przestrzeni nazw i mechanizm leniwego importu
 Name:		python-apipkg
 Version:	1.5
-Release:	1
+Release:	2
 License:	MIT
 Group:		Libraries/Python
 #Source0Download: https://pypi.org/simple/apipkg/
