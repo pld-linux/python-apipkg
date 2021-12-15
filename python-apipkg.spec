@@ -18,13 +18,13 @@ URL:		http://bitbucket.org/hpk42/apipkg
 %if %{with python2}
 BuildRequires:	python-modules >= 1:2.7
 %{?with_tests:BuildRequires:	python-pytest}
-BuildRequires:	python-setuptools >= 30.3.0
+BuildRequires:	python-setuptools >= 1:30.3.0
 BuildRequires:	python-setuptools_scm
 %endif
 %if %{with python3}
 BuildRequires:	python3-modules >= 1:3.4
 %{?with_tests:BuildRequires:	python3-pytest}
-BuildRequires:	python3-setuptools >= 30.3.0
+BuildRequires:	python3-setuptools >= 1:30.3.0
 BuildRequires:	python3-setuptools_scm
 %endif
 BuildRequires:	rpm-pythonprov
