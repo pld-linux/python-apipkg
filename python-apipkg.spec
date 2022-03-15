@@ -7,13 +7,13 @@
 Summary:	Namespace control and lazy-import mechanism
 Summary(pl.UTF-8):	Kontrola przestrzeni nazw i mechanizm leniwego importu
 Name:		python-apipkg
-Version:	1.5
-Release:	3
+Version:	2.1.0
+Release:	1
 License:	MIT
 Group:		Libraries/Python
 #Source0Download: https://pypi.org/simple/apipkg/
 Source0:	https://files.pythonhosted.org/packages/source/a/apipkg/apipkg-%{version}.tar.gz
-# Source0-md5:	6d2bc4d9358e046cc56efc677c976a5c
+# Source0-md5:	831741a57e9fcb2b85c191a046916c8d
 URL:		http://bitbucket.org/hpk42/apipkg
 %if %{with python2}
 BuildRequires:	python-modules >= 1:2.7
@@ -65,6 +65,7 @@ przez użytkowników.
 %py_build
 
 %if %{with tests}
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
 PYTHONPATH=$(pwd)/src \
 %{__python} -m pytest
 %endif
@@ -74,6 +75,7 @@ PYTHONPATH=$(pwd)/src \
 %py3_build
 
 %if %{with tests}
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
 PYTHONPATH=$(pwd)/src \
 %{__python3} -m pytest
 %endif
@@ -86,10 +88,16 @@ rm -rf $RPM_BUILD_ROOT
 %py_install
 
 %py_postclean
+
+install -d $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
+cp -pr example/* $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
 %endif
 
 %if %{with python3}
 %py3_install
+
+install -d $RPM_BUILD_ROOT%{_examplesdir}/python3-apipkg-%{version}
+cp -pr example/* $RPM_BUILD_ROOT%{_examplesdir}/python3-apipkg-%{version}
 %endif
 
 %clean
@@ -101,6 +109,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc CHANGELOG LICENSE README.rst
 %{py_sitescriptdir}/apipkg
 %{py_sitescriptdir}/apipkg-%{version}-py*.egg-info
+%{_examplesdir}/%{name}-%{version}
 %endif
 
 %if %{with python3}
@@ -109,4 +118,5 @@ rm -rf $RPM_BUILD_ROOT
 %doc CHANGELOG LICENSE README.rst
 %{py3_sitescriptdir}/apipkg
 %{py3_sitescriptdir}/apipkg-%{version}-py*.egg-info
+%{_examplesdir}/python3-apipkg-%{version}
 %endif
